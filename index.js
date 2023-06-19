@@ -1,4 +1,5 @@
-const http = require('http')
+const express = require('express')
+const app = express()
 
 let persons = [
     { 
@@ -22,12 +23,12 @@ let persons = [
         id: 4
     }
 ]
-
-const app = http.createServer((request, response) => {
-    response.writeHead(200, { 'Content-Type': 'application/json' })
-    response.end(JSON.stringify(persons))
-})
-
-const PORT = 3001
-app.listen(PORT)
-console.log(`Server running on port ${PORT}`)
+  
+  app.get('/api/persons', (request, response) => {
+    response.json(persons)
+  })
+  
+  const PORT = 3001
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`)
+  })
