@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 var morgan = require('morgan')
+const cors = require('cors')
 
 const requestLogger = (request, response, next) => {
     console.log('Method:', request.method)
@@ -12,6 +13,7 @@ const requestLogger = (request, response, next) => {
 
 app.use(express.json())
 app.use(requestLogger)
+app.use(cors())
 
 morgan.token('body', (request) => JSON.stringify(request.body))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
@@ -36,6 +38,11 @@ let persons = [
         name: "Mary Poppendieck", 
         number: "39-23-6423122",
         id: 4
+    },
+    { 
+        name: "lollero", 
+        number: "39-23-6423122",
+        id: 5
     }
 ]
   
