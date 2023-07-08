@@ -53,11 +53,13 @@ app.get('/api/persons', (request, response) => {
 })
 
 app.get('/info', (request, response) => {
-    const length = persons.length
     const currentDate = new Date().toUTCString()
-    const msg = `Phonebook has info for ${length} people.<br>${currentDate}`
 
-    response.send(`<p>${msg}</p>`)
+    Person.find({}).then(persons => {
+        persons.map(person => person.toJSON())
+        response.send(`<p>Phonebook has info for ${persons.length} people.</p><br>${currentDate}`
+        )
+    })
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
