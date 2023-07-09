@@ -93,18 +93,27 @@ app.post('/api/persons', (request, response, next) => {
         })
     }
 
-    const person = new Person({
-        name: body.name,
-        number:body.number,
-        id: generateId,
-    })
+    Person.findOne({ name: body.name })
+        .then((existingPerson) => {
+            if (existingPerson) {
+                return response.status(400).json({
+                    error: 'name must be unique',
+                })
+            }
 
-    person
-        .save()
-        .then(savedPerson => {
-            response.json(savedPerson)
+        const person = new Person({
+            name: body.name,
+            number:body.number,
+            id: generateId(),
         })
-        .catch(error => next(error))
+
+        person
+            .save()
+            .then(savedPerson => {
+                response.json(savedPerson)
+            })
+            .catch(error => next(error))
+    })
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
